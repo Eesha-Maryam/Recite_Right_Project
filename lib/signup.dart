@@ -54,7 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          left: BorderSide(color: oliveGreen, width: 5), // Left border only
+          left: BorderSide(color: oliveGreen, width: 7), // Left border only
         ),
         boxShadow: [
           BoxShadow(
@@ -73,7 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
           hintStyle: TextStyle(color: Colors.black54),
           contentPadding: EdgeInsets.symmetric(
             vertical: 12,
-            horizontal: 10, // Adjusted horizontal padding
+            horizontal: 15, // Adjusted horizontal padding
           ),
           suffixIcon: suffixIcon, // Add suffix icon for password fields
           // Removing default borders
@@ -137,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.asset(
-                      'assets/LoginBanner.png',
+                      'SignUp_Banner.png',
                       width: 200,
                       height: 580,
                       fit: BoxFit.cover,
@@ -149,7 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Positioned(
                 top:
                     constraints.maxHeight *
-                    0.15, // Adjusted to move the form upwards
+                    0.17, // Adjusted to move the form upwards
                 left: constraints.maxWidth * 0.26,
                 child: Container(
                   width: formWidth,
@@ -223,7 +223,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                               color:
-                                  charcoal, // Changed eye icon color to charcoal
+                                  Colors
+                                      .black54, // Changed eye icon color to charcoal
                             ),
                             onPressed: () {
                               setState(() {
@@ -244,7 +245,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                               color:
-                                  charcoal, // Changed eye icon color to charcoal
+                                  Colors
+                                      .black54, // Changed eye icon color to charcoal
                             ),
                             onPressed: () {
                               setState(() {
