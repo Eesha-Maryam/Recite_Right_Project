@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           decoration: BoxDecoration(
                             border: Border(
-                              left: BorderSide(color: oliveGreen, width: 5),
+                              left: BorderSide(color: oliveGreen, width: 7),
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           decoration: BoxDecoration(
                             border: Border(
-                              left: BorderSide(color: oliveGreen, width: 5),
+                              left: BorderSide(color: oliveGreen, width: 7),
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -344,7 +344,7 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             },
                             child: Text(
-                              "Don't have an account? Sign Up",
+                              "Don't have an account? Signup",
                               style: TextStyle(color: charcoal, fontSize: 14),
                             ),
                           ),
