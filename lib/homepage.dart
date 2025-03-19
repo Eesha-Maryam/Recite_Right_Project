@@ -49,7 +49,7 @@ class HomePageState extends State<HomePage> {
       height: MediaQuery.of(context).size.height * 0.35,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/background.png"),
+          image: AssetImage("background.png"),
           fit: BoxFit.cover,
         ),
       ),
