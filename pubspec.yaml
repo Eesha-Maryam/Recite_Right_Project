@@ -54,6 +54,8 @@ flutter:
   assets:
     - assets/QuranLogo.png
     - assets/LoginBanner.png
+    - assets/SignUp_Banner.png
+    - assets/background.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
