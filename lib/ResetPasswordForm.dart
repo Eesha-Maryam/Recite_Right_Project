@@ -12,115 +12,160 @@ void main() {
 class ResetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          // 🔹 Top Left "RECITE RIGHT" Logo + Text
-          Positioned(
-            top: 20,
-            left: 20,
-            child: Row(
-              children: [
-                Image.asset('assets/QuranLogo.png', width: 35, height: 35),
-                const SizedBox(width: 8),
-                Text(
-                  'RECITE RIGHT',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: oliveGreen,
-                  ),
-                ),
-              ],
-            ),
-          ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double screenWidth = constraints.maxWidth;
+          double screenHeight = constraints.maxHeight;
 
-          // 🔹 Center Olive Green Block
-          Center(
-            child: SingleChildScrollView(
-              child: Container(
-                width: screenWidth * 0.41, // Adjusted width
-                height: screenHeight * 0.65, // Adjusted height
-                decoration: BoxDecoration(
-                  color: oliveGreen,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Container(
-                    width: screenWidth * 0.30, // Adjusted inner container width
-                    height:
-                        screenHeight * 0.45, // Adjusted inner container height
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
+          return Stack(
+            children: [
+              // 🔹 Top Left "RECITE RIGHT" Logo + Text
+              Positioned(
+                top: 20,
+                left: 20,
+                child: Row(
+                  children: [
+                    Image.asset('assets/QuranLogo.png', width: 35, height: 35),
+                    const SizedBox(width: 8),
+                    Text(
+                      'RECITE RIGHT',
+                      style: TextStyle(
+                        fontSize:
+                            screenWidth < 600 ? 18 : 22, // Responsive font size
+                        fontWeight: FontWeight.bold,
+                        color: oliveGreen,
+                      ),
                     ),
-                    padding: const EdgeInsets.all(20), // Reduced padding
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // 🔹 Reset Password Title
-                        Text(
-                          'Reset Password',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: charcoal,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
+                  ],
+                ),
+              ),
 
-                        // 🔹 New Password Field
-                        _customTextField(
-                          hintText: 'New Password',
-                          icon: Icons.lock,
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        // 🔹 Confirm New Password Field
-                        _customTextField(
-                          hintText: 'Confirm New Password',
-                          icon: Icons.lock,
-                        ),
-
-                        const SizedBox(height: 20),
-
-                        // 🔹 Reset Button
-                        ElevatedButton(
-                          onPressed: () {
-                            // Add reset password logic here
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: oliveGreen,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.04,
-                              vertical: 16,
-                            ), // Increased vertical padding
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+              // 🔹 Center Olive Green Block
+              Center(
+                child: SingleChildScrollView(
+                  child: Container(
+                    width:
+                        screenWidth < 600
+                            ? screenWidth *
+                                0.9 // Adjusted for small screens
+                            : screenWidth * 0.41, // Adjusted for larger screens
+                    height:
+                        screenHeight < 600
+                            ? screenHeight *
+                                0.7 // Adjusted for small screens
+                            : screenHeight *
+                                0.65, // Adjusted for larger screens
+                    decoration: BoxDecoration(
+                      color: oliveGreen,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Container(
+                        width:
+                            screenWidth < 600
+                                ? screenWidth *
+                                    0.8 // Adjusted for small screens
+                                : screenWidth *
+                                    0.30, // Adjusted for larger screens
+                        height:
+                            screenHeight < 600
+                                ? screenHeight *
+                                    0.5 // Adjusted for small screens
+                                : screenHeight *
+                                    0.45, // Adjusted for larger screens
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 10,
+                              spreadRadius: 2,
+                              offset: Offset(0, 4),
                             ),
-                          ),
-                          child: Text(
-                            'RESET',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          ],
                         ),
-                      ],
+                        padding: EdgeInsets.all(
+                          screenWidth < 600 ? 15 : 20,
+                        ), // Responsive padding
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // 🔹 Reset Password Title
+                            Text(
+                              'Reset Password',
+                              style: TextStyle(
+                                fontSize:
+                                    screenWidth < 600
+                                        ? 20
+                                        : 24, // Responsive font size
+                                fontWeight: FontWeight.bold,
+                                color: charcoal,
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenHeight < 600 ? 15 : 20,
+                            ), // Responsive spacing
+                            // 🔹 New Password Field
+                            _customTextField(
+                              hintText: 'New Password',
+                              icon: Icons.lock,
+                            ),
+
+                            SizedBox(
+                              height: screenHeight < 600 ? 10 : 15,
+                            ), // Responsive spacing
+                            // 🔹 Confirm New Password Field
+                            _customTextField(
+                              hintText: 'Confirm New Password',
+                              icon: Icons.lock,
+                            ),
+
+                            SizedBox(
+                              height: screenHeight < 600 ? 15 : 20,
+                            ), // Responsive spacing
+                            // 🔹 Reset Button
+                            ElevatedButton(
+                              onPressed: () {
+                                // Add reset password logic here
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: oliveGreen,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: screenWidth * 0.04,
+                                  vertical:
+                                      screenHeight < 600
+                                          ? 10
+                                          : 19, // Responsive padding
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              child: Text(
+                                'RESET',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize:
+                                      screenWidth < 600
+                                          ? 14
+                                          : 16, // Responsive font size
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
