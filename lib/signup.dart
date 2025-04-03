@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'dart:math';
 
 const Color charcoal = Color(0xFF333333);
 const Color oliveGreen = Color(0xFF97B469);
@@ -21,8 +22,32 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isConfirmPasswordVisible = false;
   bool _isHovering = false;
 
+  // Form positioning variables
+  double _baseTopPosition = 0.18;
+  double _formTopPosition = 0.18;
+  double _maxTopAdjustment = 0.08;
+  double _perErrorAdjustment = 0.02;
+  double _imageTopPosition = 0.10;
+
+  // Error states
+  bool _showEmailError = false;
+  bool _showPasswordError = false;
+  bool _showConfirmPasswordError = false;
+  bool _showTermsError = false;
+  double _fieldSpacing = 8.0;
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) return 'Email is required';
+    if (value == null || value.isEmpty) return 'This field is required';
     final emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
     );
@@ -31,7 +56,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) return 'Password is required';
+    if (value == null || value.isEmpty) return 'This field is required';
     if (value.length < 8) return 'Password must be at least 8 characters';
     if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$').hasMatch(value)) {
       return 'Must contain upper, lower, and number';
@@ -40,9 +65,42 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   String? _validateConfirmPassword(String? value) {
-    if (value == null || value.isEmpty) return 'Confirm password is required';
+    if (value == null || value.isEmpty) return 'This field is required';
     if (value != _passwordController.text) return 'Passwords do not match';
     return null;
+  }
+
+  void _checkErrors() {
+    setState(() {
+      _showEmailError = _validateEmail(_emailController.text) != null;
+      _showPasswordError = _validatePassword(_passwordController.text) != null;
+      _showConfirmPasswordError =
+          _validateConfirmPassword(_confirmPasswordController.text) != null;
+      _showTermsError = !_isChecked;
+
+      // Count active errors
+      int errorCount =
+          [
+            _showEmailError,
+            _showPasswordError,
+            _showConfirmPasswordError,
+            _showTermsError,
+          ].where((e) => e).length;
+
+      // Calculate dynamic adjustment
+      double adjustment = errorCount * _perErrorAdjustment;
+      _formTopPosition = _baseTopPosition - min(adjustment, _maxTopAdjustment);
+    });
+  }
+
+  void _handleSignUp() {
+    final isValid = _formKey.currentState?.validate() ?? false;
+    _checkErrors();
+
+    if (isValid && _isChecked) {
+      // Process successful signup
+      print('Sign up successful');
+    }
   }
 
   @override
@@ -109,7 +167,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
             return Stack(
               children: [
-                // Logo for both tablet and desktop
                 Positioned(
                   top: 20,
                   left: 20,
@@ -133,15 +190,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
 
-                // In the desktop section of your code, modify these parts:
                 if (isDesktop)
                   Positioned(
                     left: (width - formWidth - imageWidth) / 2 + formWidth - 20,
-                    top:
-                        height * 0.10, // Changed from 0.10 to 0.15 (moved down)
+                    top: height * _imageTopPosition,
                     child: Container(
                       width: imageWidth,
-                      height: 620, // Increased from 580 to 620
+                      height: 620,
                       decoration: BoxDecoration(
                         color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(8),
@@ -151,18 +206,20 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: Image.asset(
                           'assets/SignUp_Banner.png',
                           width: imageWidth,
-                          height: 620, // Match container height
+                          height: 620,
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
 
-                Positioned(
+                AnimatedPositioned(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
                   left:
                       (width - formWidth - (isDesktop ? imageWidth - 20 : 0)) /
                       2,
-                  top: height * 0.15, // Changed from 0.10 to 0.15 (moved down)
+                  top: height * _formTopPosition,
                   child: Container(
                     width: formWidth,
                     padding: EdgeInsets.all(30),
@@ -227,19 +284,20 @@ class _SignUpPageState extends State<SignUpPage> {
             ],
           ),
 
-          SizedBox(height: isMobile ? 15 : 20),
+          SizedBox(height: _fieldSpacing),
           _buildInputField(
             controller: _emailController,
             hintText: 'Email',
-            validator: _validateEmail,
             isMobile: isMobile,
           ),
-          SizedBox(height: isMobile ? 15 : 20),
+          if (_showEmailError)
+            _buildErrorText(_validateEmail(_emailController.text) ?? ''),
+
+          SizedBox(height: _fieldSpacing),
           _buildInputField(
             controller: _passwordController,
             hintText: 'Password',
             obscureText: !_isPasswordVisible,
-            validator: _validatePassword,
             isMobile: isMobile,
             suffixIcon: IconButton(
               icon: Icon(
@@ -253,12 +311,14 @@ class _SignUpPageState extends State<SignUpPage> {
               },
             ),
           ),
-          SizedBox(height: isMobile ? 15 : 20),
+          if (_showPasswordError)
+            _buildErrorText(_validatePassword(_passwordController.text) ?? ''),
+
+          SizedBox(height: _fieldSpacing),
           _buildInputField(
             controller: _confirmPasswordController,
             hintText: 'Confirm Password',
             obscureText: !_isConfirmPasswordVisible,
-            validator: _validateConfirmPassword,
             isMobile: isMobile,
             suffixIcon: IconButton(
               icon: Icon(
@@ -274,8 +334,12 @@ class _SignUpPageState extends State<SignUpPage> {
               },
             ),
           ),
-          SizedBox(height: isMobile ? 15 : 15),
+          if (_showConfirmPasswordError)
+            _buildErrorText(
+              _validateConfirmPassword(_confirmPasswordController.text) ?? '',
+            ),
 
+          SizedBox(height: 10),
           Row(
             children: [
               Checkbox(
@@ -284,19 +348,23 @@ class _SignUpPageState extends State<SignUpPage> {
                 onChanged: (value) {
                   setState(() {
                     _isChecked = value!;
+                    _showTermsError = false;
                   });
                 },
               ),
-              Expanded(
-                child: Text(
-                  'I accept all the Privacy Policy & Terms',
-                  style: TextStyle(fontSize: isMobile ? 13 : 14),
-                ),
+              Text(
+                'I accept all the Privacy Policy & Terms',
+                style: TextStyle(fontSize: isMobile ? 13 : 14),
               ),
             ],
           ),
-          SizedBox(height: isMobile ? 15 : 25),
+          if (_showTermsError)
+            Padding(
+              padding: EdgeInsets.only(left: 8, top: 4),
+              child: _buildErrorText('You must accept the terms'),
+            ),
 
+          SizedBox(height: isMobile ? 15 : 25),
           Center(
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -310,11 +378,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              onPressed: () {
-                if (_formKey.currentState!.validate() && _isChecked) {
-                  // Process signup
-                }
-              },
+              onPressed: _handleSignUp,
               child: Text(
                 'SIGN UP',
                 style: TextStyle(
@@ -327,7 +391,6 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
 
           SizedBox(height: isMobile ? 15 : 20),
-
           Center(
             child: GestureDetector(
               onTap: () {
@@ -358,44 +421,65 @@ class _SignUpPageState extends State<SignUpPage> {
     required TextEditingController controller,
     required String hintText,
     bool obscureText = false,
-    String? Function(String?)? validator,
     Widget? suffixIcon,
     required bool isMobile,
   }) {
-    return Container(
-      margin: EdgeInsets.only(bottom: isMobile ? 10 : 0),
-      decoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(color: oliveGreen, width: 7),
-          top: BorderSide(color: charcoal.withOpacity(0.7)),
-          right: BorderSide(color: charcoal.withOpacity(0.7)),
-          bottom: BorderSide(color: charcoal.withOpacity(0.7)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(color: oliveGreen, width: 7),
+              top: BorderSide(color: charcoal.withOpacity(0.7)),
+              right: BorderSide(color: charcoal.withOpacity(0.7)),
+              bottom: BorderSide(color: charcoal.withOpacity(0.7)),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: oliveGreen.withOpacity(0.5),
+                blurRadius: 8,
+                spreadRadius: 2,
+                offset: Offset(3, 3),
+              ),
+            ],
+          ),
+          child: TextField(
+            controller: controller,
+            obscureText: obscureText,
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: TextStyle(color: Colors.black54),
+              contentPadding: EdgeInsets.symmetric(
+                vertical: isMobile ? 15 : 18,
+                horizontal: isMobile ? 18 : 22,
+              ),
+              suffixIcon: suffixIcon,
+              border: InputBorder.none,
+              filled: true,
+              fillColor: Colors.white,
+            ),
+          ),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: oliveGreen.withOpacity(0.5),
-            blurRadius: 8,
-            spreadRadius: 2,
-            offset: Offset(3, 3),
+      ],
+    );
+  }
+
+  Widget _buildErrorText(String error) {
+    return Padding(
+      padding: EdgeInsets.only(left: 8, top: 4, bottom: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.error_outline, color: Colors.red, size: 16),
+          SizedBox(width: 5),
+          Expanded(
+            child: Text(
+              error,
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
           ),
         ],
-      ),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: TextStyle(color: Colors.black54),
-          contentPadding: EdgeInsets.symmetric(
-            vertical: isMobile ? 15 : 18,
-            horizontal: isMobile ? 18 : 22,
-          ),
-          suffixIcon: suffixIcon,
-          border: InputBorder.none,
-          filled: true,
-          fillColor: Colors.white,
-        ),
-        validator: validator,
       ),
     );
   }
