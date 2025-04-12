@@ -5,7 +5,7 @@ import 'ResetPasswordForm.dart';
 
 const Color charcoal = Color(0xFF555555);
 const Color oliveGreen = Color(0xFF97B469);
-
+const Color creamWhite = Color(0xFFF8F5F0);
 void main() {
   runApp(MaterialApp(home: LoginPage(), debugShowCheckedModeBanner: false));
 }
@@ -21,14 +21,16 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool _rememberMe = false;
   bool _obscurePassword = true;
-  bool _isHovering = false;
+  bool _isLoginHovering = false;
+  bool _isForgotPasswordHovering = false;
   bool _showEmailError = false;
   bool _showPasswordError = false;
   String _emailErrorText = '';
   String _passwordErrorText = '';
   double _passwordFieldSpacing = 8.0;
   double _formTopPosition = 0.25; // Initial top position (25% of screen height)
-  double _formTopAdjustment = 0.04; // Adjustable value for form movement (2% of screen height)
+  double _formTopAdjustment =
+      0.04; // Adjustable value for form movement (2% of screen height)
   double _imageTopPosition = 0.17; // Fixed position for image placeholder
 
   @override
@@ -133,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: creamWhite,
       body: LayoutBuilder(
         builder: (context, constraints) {
           double width = constraints.maxWidth;
@@ -169,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Container(
                     padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: creamWhite,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
                         topRight: Radius.circular(40),
@@ -241,13 +243,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                 Positioned(
-                  left: (width - formWidth - (isDesktop ? imageWidth - 20 : 0)) / 2,
+                  left:
+                      (width - formWidth - (isDesktop ? imageWidth - 20 : 0)) /
+                      2,
                   top: height * _formTopPosition, // Dynamic position for form
                   child: Container(
                     width: formWidth,
                     padding: EdgeInsets.all(30),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.97),
+                      color: creamWhite.withOpacity(0.97),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -351,12 +355,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Container(
           decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(color: oliveGreen, width: 7),
-              top: BorderSide(color: charcoal.withOpacity(0.7)),
-              right: BorderSide(color: charcoal.withOpacity(0.7)),
-              bottom: BorderSide(color: charcoal.withOpacity(0.7)),
-            ),
+            border: const Border(left: BorderSide(color: oliveGreen, width: 7)),
             boxShadow: [
               BoxShadow(
                 color: oliveGreen.withOpacity(0.5),
@@ -389,7 +388,7 @@ class _LoginPageState extends State<LoginPage> {
                       )
                       : null,
               filled: true,
-              fillColor: Colors.white,
+              fillColor: creamWhite,
               errorStyle: TextStyle(height: 0),
             ),
           ),
@@ -461,12 +460,12 @@ class _LoginPageState extends State<LoginPage> {
               );
             },
             child: MouseRegion(
-              onEnter: (_) => setState(() => _isHovering = true),
-              onExit: (_) => setState(() => _isHovering = false),
+              onEnter: (_) => setState(() => _isForgotPasswordHovering = true),
+              onExit: (_) => setState(() => _isForgotPasswordHovering = false),
               child: Text(
                 "Forgot Password?",
                 style: TextStyle(
-                  color: _isHovering ? oliveGreen : charcoal,
+                  color: _isForgotPasswordHovering ? oliveGreen : charcoal,
                   fontSize: isMobile ? 13 : 14,
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -494,7 +493,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Text(
           'LOGIN',
           style: TextStyle(
-            color: Colors.white,
+            color: creamWhite,
             fontSize: isMobile ? 14 : 16,
             fontWeight: FontWeight.bold,
           ),
@@ -504,19 +503,30 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildSignupLink(bool isMobile) {
-    return Center(
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => SignUpPage()),
-          );
-        },
-        child: Text(
-          "Don't have an account? Signup",
-          style: TextStyle(color: charcoal, fontSize: isMobile ? 13 : 14),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Don't have an account? "),
+        MouseRegion(
+          onEnter: (_) => setState(() => _isLoginHovering = true),
+          onExit: (_) => setState(() => _isLoginHovering = false),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpPage()),
+              );
+            },
+            child: Text(
+              'Sign Up',
+              style: TextStyle(
+                color: _isLoginHovering ? oliveGreen : charcoal,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }
