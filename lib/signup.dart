@@ -4,6 +4,7 @@ import 'dart:math';
 
 const Color charcoal = Color(0xFF333333);
 const Color oliveGreen = Color(0xFF97B469);
+const Color creamWhite = Color(0xFFF8F5F0);
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -106,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: creamWhite,
       body: LayoutBuilder(
         builder: (context, constraints) {
           double width = constraints.maxWidth;
@@ -142,7 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Container(
                     padding: EdgeInsets.fromLTRB(20, 30, 20, 30),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: creamWhite,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
                         topRight: Radius.circular(40),
@@ -224,7 +225,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: formWidth,
                     padding: EdgeInsets.all(30),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.97),
+                      color: creamWhite.withOpacity(0.97),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -383,7 +384,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 'SIGN UP',
                 style: TextStyle(
                   fontSize: isMobile ? 14 : 16,
-                  color: Colors.white,
+                  color: creamWhite,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -392,24 +393,37 @@ class _SignUpPageState extends State<SignUpPage> {
 
           SizedBox(height: isMobile ? 15 : 20),
           Center(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              child: MouseRegion(
-                onEnter: (_) => setState(() => _isHovering = true),
-                onExit: (_) => setState(() => _isHovering = false),
-                child: Text(
-                  "Already have an account? Login",
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Already have an account? ",
                   style: TextStyle(
-                    color: _isHovering ? oliveGreen : charcoal,
+                    color: charcoal,
                     fontSize: isMobile ? 13 : 14,
                   ),
                 ),
-              ),
+                MouseRegion(
+                  onEnter: (_) => setState(() => _isHovering = true),
+                  onExit: (_) => setState(() => _isHovering = false),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                        color: _isHovering ? oliveGreen : charcoal,
+                        fontSize: isMobile ? 13 : 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -429,12 +443,7 @@ class _SignUpPageState extends State<SignUpPage> {
       children: [
         Container(
           decoration: BoxDecoration(
-            border: Border(
-              left: BorderSide(color: oliveGreen, width: 7),
-              top: BorderSide(color: charcoal.withOpacity(0.7)),
-              right: BorderSide(color: charcoal.withOpacity(0.7)),
-              bottom: BorderSide(color: charcoal.withOpacity(0.7)),
-            ),
+            border: const Border(left: BorderSide(color: oliveGreen, width: 7)),
             boxShadow: [
               BoxShadow(
                 color: oliveGreen.withOpacity(0.5),
@@ -457,7 +466,7 @@ class _SignUpPageState extends State<SignUpPage> {
               suffixIcon: suffixIcon,
               border: InputBorder.none,
               filled: true,
-              fillColor: Colors.white,
+              fillColor: creamWhite,
             ),
           ),
         ),
