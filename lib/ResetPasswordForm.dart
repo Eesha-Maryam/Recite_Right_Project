@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Color charcoal = Color(0xFF333333);
 const Color oliveGreen = Color(0xFF97B469);
-
+const Color creamWhite = Color(0xFFF8F5F0);
 void main() {
   runApp(
     MaterialApp(home: ResetPasswordPage(), debugShowCheckedModeBanner: false),
@@ -13,7 +13,7 @@ class ResetPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: creamWhite,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final screenWidth = constraints.maxWidth;
@@ -47,7 +47,7 @@ class ResetPasswordPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: creamWhite,
                           ),
                         ),
                       ],
@@ -72,7 +72,7 @@ class ResetPasswordPage extends StatelessWidget {
                     child: Container(
                       margin: const EdgeInsets.only(top: 15),
                       decoration: const BoxDecoration(
-                        color: Colors.white,
+                        color: creamWhite,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(40),
                           topRight: Radius.circular(40),
@@ -125,7 +125,7 @@ class ResetPasswordPage extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: creamWhite,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -175,7 +175,7 @@ class ResetPasswordPage extends StatelessWidget {
             child: const Text(
               'RESET',
               style: TextStyle(
-                color: Colors.white,
+                color: creamWhite,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -200,7 +200,7 @@ class ResetPasswordPage extends StatelessWidget {
         ),
         SizedBox(height: isDesktop ? 30 : 25),
         _customTextField(hintText: 'New Password', icon: Icons.lock),
-        SizedBox(height: isDesktop ? 25 : 20),
+        SizedBox(height: isDesktop ? 12 : 10),
         _customTextField(hintText: 'Confirm New Password', icon: Icons.lock),
         SizedBox(height: isDesktop ? 30 : 25),
         SizedBox(
@@ -217,7 +217,7 @@ class ResetPasswordPage extends StatelessWidget {
             child: Text(
               'RESET',
               style: TextStyle(
-                color: Colors.white,
+                color: creamWhite,
                 fontSize: isDesktop ? 18 : 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -232,10 +232,10 @@ class ResetPasswordPage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
-        border: const Border(left: BorderSide(color: oliveGreen, width: 4)),
+        border: const Border(left: BorderSide(color: oliveGreen, width: 7)),
         boxShadow: [
           BoxShadow(
-            color: oliveGreen.withOpacity(0.2),
+            color: oliveGreen.withOpacity(0.5),
             blurRadius: 6,
             spreadRadius: 1,
             offset: const Offset(3, 3),
@@ -254,7 +254,7 @@ class ResetPasswordPage extends StatelessWidget {
           prefixIcon: Icon(icon, color: oliveGreen, size: 24),
           border: InputBorder.none,
           filled: true,
-          fillColor: Colors.white,
+          fillColor: creamWhite,
         ),
       ),
     );
