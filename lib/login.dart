@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:recite_right_project/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'ResetPasswordForm.dart';
+import 'homepage.dart';
+import 'dart:convert';
 
 const Color charcoal = Color(0xFF555555);
 const Color oliveGreen = Color(0xFF97B469);
 const Color creamWhite = Color(0xFFF8F5F0);
+
 void main() {
   runApp(MaterialApp(home: LoginPage(), debugShowCheckedModeBanner: false));
 }
@@ -19,8 +24,10 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _storage = FlutterSecureStorage(); // For secure token storage
   bool _rememberMe = false;
   bool _obscurePassword = true;
+  bool _isLoading = false; // Added loading state
   bool _isLoginHovering = false;
   bool _isForgotPasswordHovering = false;
   bool _showEmailError = false;
@@ -28,15 +35,19 @@ class _LoginPageState extends State<LoginPage> {
   String _emailErrorText = '';
   String _passwordErrorText = '';
   double _passwordFieldSpacing = 8.0;
-  double _formTopPosition = 0.25; // Initial top position (25% of screen height)
-  double _formTopAdjustment =
-      0.04; // Adjustable value for form movement (2% of screen height)
-  double _imageTopPosition = 0.17; // Fixed position for image placeholder
+  double _formTopPosition = 0.25;
+  double _formTopAdjustment = 0.04;
+  double _imageTopPosition = 0.17;
 
   @override
   void initState() {
     super.initState();
     _loadSavedCredentials();
+  }
+
+  // Validate email format
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
   Future<void> _loadSavedCredentials() async {
@@ -61,74 +72,107 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _handleLogin() async {
-    // Reset error states and spacing
+  Future<void> _handleLogin() async {
+    if (_isLoading) return;
+
+    // Reset states
     setState(() {
       _showEmailError = false;
       _showPasswordError = false;
       _emailErrorText = '';
       _passwordErrorText = '';
       _passwordFieldSpacing = 8.0;
-      _formTopPosition = 0.25; // Reset to original position
+      _formTopPosition = 0.25;
+      _isLoading = true;
     });
 
-    // Validate fields
-    bool isValid = true;
+    bool hasEmailError = false;
+    bool hasPasswordError = false;
 
-    if (_emailController.text.isEmpty) {
-      setState(() {
-        _showEmailError = true;
-        _emailErrorText = 'This field is required';
-        _passwordFieldSpacing = 15.0;
-        _formTopPosition = 0.25 - _formTopAdjustment; // Move form up
-      });
-      isValid = false;
+    // Validate email format
+    if (!_isValidEmail(_emailController.text)) {
+      hasEmailError = true;
+      _emailErrorText = 'Please enter a valid email address';
     }
 
+    // Validate password
     if (_passwordController.text.isEmpty) {
-      setState(() {
-        _showPasswordError = true;
-        _passwordErrorText = 'This field is required';
-        _passwordFieldSpacing = 15.0;
-        // Only adjust position if it hasn't been adjusted yet
-        if (_formTopPosition == 0.25) {
-          _formTopPosition = 0.25 - _formTopAdjustment;
-        }
-      });
-      isValid = false;
+      hasPasswordError = true;
+      _passwordErrorText = 'Password is required';
     } else if (_passwordController.text.length < 6) {
-      setState(() {
-        _showPasswordError = true;
-        _passwordErrorText = 'Password must be at least 6 characters';
-        _passwordFieldSpacing = 15.0;
-        // Only adjust position if it hasn't been adjusted yet
-        if (_formTopPosition == 0.25) {
-          _formTopPosition = 0.25 - _formTopAdjustment;
-        }
-      });
-      isValid = false;
+      hasPasswordError = true;
+      _passwordErrorText = 'Password must be at least 6 characters long';
     }
 
-    if (isValid) {
-      final email = _emailController.text;
-      final password = _passwordController.text;
+    if (hasEmailError || hasPasswordError) {
+      setState(() {
+        _showEmailError = hasEmailError;
+        _showPasswordError = hasPasswordError;
+        _passwordFieldSpacing = 15.0;
+        if (hasEmailError && hasPasswordError) {
+          _formTopPosition =
+              0.25 - (_formTopAdjustment * 1.5); // Extra space for two errors
+        } else if (_formTopPosition == 0.25) {
+          _formTopPosition = 0.25 - _formTopAdjustment;
+        }
+        _isLoading = false;
+      });
+      return;
+    }
 
-      if (email == 'user@example.com' && password == 'password123') {
-        await _saveCredentials();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Login Successful'),
-            backgroundColor: Colors.green,
-          ),
-        );
+    // Rest of your login logic...
+    try {
+      final url = Uri.parse('https://your-api-url.com/login');
+      final headers = {'Content-Type': 'application/json'};
+      final body = jsonEncode({
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      });
+
+      final response = await http.post(url, headers: headers, body: body);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true) {
+          await _saveCredentials();
+
+          if (data['token'] != null) {
+            await _storage.write(key: 'auth_token', value: data['token']);
+          }
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                data['message'] ?? 'Unable to login. Please try again.',
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Invalid email or password'),
+            content: Text(
+              'Server error (${response.statusCode}). Please try again later.',
+            ),
             backgroundColor: Colors.red,
           ),
         );
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Network error. Please check your connection.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -222,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (isDesktop)
                   Positioned(
                     left: (width - formWidth - imageWidth) / 2 + formWidth - 20,
-                    top: height * _imageTopPosition, // Fixed position for image
+                    top: height * _imageTopPosition,
                     child: Container(
                       width: imageWidth,
                       height: 520,
@@ -246,7 +290,7 @@ class _LoginPageState extends State<LoginPage> {
                   left:
                       (width - formWidth - (isDesktop ? imageWidth - 20 : 0)) /
                       2,
-                  top: height * _formTopPosition, // Dynamic position for form
+                  top: height * _formTopPosition,
                   child: Container(
                     width: formWidth,
                     padding: EdgeInsets.all(30),
@@ -272,7 +316,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Rest of your code remains the same...
   Widget _buildFormContent(bool isMobile) {
     return Form(
       key: _formKey,
@@ -395,13 +438,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
         if (showError)
           Container(
-            padding: EdgeInsets.symmetric(
-              vertical: 4.0,
-            ), // Increased internal padding
-            margin: EdgeInsets.only(
-              left: 8.0,
-              top: 4.0,
-            ), // Increased top margin
+            padding: EdgeInsets.symmetric(vertical: 4.0),
+            margin: EdgeInsets.only(left: 8.0, top: 4.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -480,7 +518,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton(bool isMobile) {
     return Center(
       child: ElevatedButton(
-        onPressed: _handleLogin,
+        onPressed: _isLoading ? null : _handleLogin,
         style: ElevatedButton.styleFrom(
           backgroundColor: oliveGreen,
           padding: EdgeInsets.symmetric(
@@ -490,14 +528,24 @@ class _LoginPageState extends State<LoginPage> {
           minimumSize: Size(isMobile ? 150 : 180, 50),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
-        child: Text(
-          'LOGIN',
-          style: TextStyle(
-            color: creamWhite,
-            fontSize: isMobile ? 14 : 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child:
+            _isLoading
+                ? SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    color: creamWhite,
+                    strokeWidth: 2,
+                  ),
+                )
+                : Text(
+                  'LOGIN',
+                  style: TextStyle(
+                    color: creamWhite,
+                    fontSize: isMobile ? 14 : 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
       ),
     );
   }
