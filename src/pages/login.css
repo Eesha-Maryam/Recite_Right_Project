@@ -1,0 +1,173 @@
+/* Main container - only for background */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(115deg, #97B469, #b5cc85, #d2e6ab);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+
+
+/* Form container - FORCEFULLY reduced height */
+.login-form-container {
+  display: flex ;
+  flex-direction: column ;
+  width: 100% ;
+  max-width: 1000px;
+  background: white ;
+  border-radius: 12px ;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) ;
+  overflow: hidden ;
+  height: 420px !important; /* FORCED height */
+  max-height: 420px !important; /* FORCED max-height */
+}
+
+@media (min-width: 1024px) {
+  .login-form-container {
+    flex-direction: row;
+    height: 420px !important; /* Same forced height for desktop */
+  }
+}
+
+/* Left banner - FORCEFULLY constrained */
+.login-form-banner {
+  width: 100% ;
+  max-width: 500px ;
+  padding: 20px ; /* Reduced padding */
+  display: flex ;
+  flex-direction: column ;
+  align-items: center ;
+  justify-content: center;
+  background-color: #97B469 ;
+  background-image: url('../assets/LoginBanner.jpg');
+  color: white;
+  box-sizing: border-box ;
+  height: 100% !important;
+  max-height: 420px !important; /* Matches container */
+}
+
+/* Right form content - FORCEFULLY constrained */
+.login-form-content {
+  width: 100% ;
+  padding: 20px 40px !important;
+  box-sizing: border-box ;
+  height: 100% !important;
+  max-height: 420px !important; /* Matches container */
+  overflow-y: auto !important;
+}
+
+@media (min-width: 1024px) {
+  .login-form-content {
+    width: 50% !important;
+    padding: 20px 40px !important;
+  }
+}
+
+/* Content adjustments to fit reduced height */
+.login-form-content h2 {
+  font-size: 22px !important; /* Slightly smaller */
+  margin-bottom: 8px !important;
+}
+
+.login-form-content p {
+  margin-bottom: 15px !important; /* Reduced */
+  font-size: 13px !important; /* Slightly smaller */
+}
+
+.login-input-group {
+  margin-bottom: 25px !important; /* Reduced */
+}
+
+.remember-forgot-row {
+  margin: 12px 0 !important; /* Reduced */
+}
+
+/* Sign up link */
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.signup-link a {
+  color: #97B469;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Remember me & forgot password */
+.remember-forgot-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+  font-size: 14px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+}
+
+.remember-me input {
+  margin-right: 8px;
+}
+
+.forgot-password {
+  color: #97B469;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Completely disable native password reveal buttons */
+input[type="password"]::-webkit-reveal,
+input[type="password"]::-webkit-caps-lock-indicator,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* For Firefox */
+input[type="password"]::-moz-reveal {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* For Edge */
+input[type="password"]::-ms-reveal {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+
+.login-input-group {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}

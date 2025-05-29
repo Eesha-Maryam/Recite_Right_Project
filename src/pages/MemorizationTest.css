@@ -1,0 +1,163 @@
+.memorization-test {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    color: #333333;
+    min-height: 100vh;
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .menu-button {
+    font-size: 1.5rem;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .app-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .header-right {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .icon-button {
+    font-size: 1.25rem;
+    color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Main Content Styles */
+  .memorization-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  
+  .page-title {
+    color: #97B469;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 3rem;
+    margin-top: 4rem;
+  }
+  
+  /* Test Mode Section */
+  .test-mode-container {
+    border: 2px solid #97B469;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+  }
+  
+  .mode-selection-title {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+  
+  .mode-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* Mode Cards */
+  .mode-card {
+    background: linear-gradient(115deg, #bed698, #dbf0b6);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .card-icon-container {
+    background-color: white;
+    border-radius: 50%;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-icon {
+    font-size: 1.25rem;
+  }
+  
+  .easy-icon {
+    color: #4caf50;
+  }
+  
+  .medium-icon {
+    color: #ff9800;
+  }
+  
+  .hard-icon {
+    color: #f44336;
+  }
+  .mode-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  
+  .mode-description {
+    font-size: 0.875rem;
+    max-width: 300px;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .memorization-header {
+      padding: 1rem 3rem;
+    }
+  
+    .app-title {
+      font-size: 1.5rem;
+    }
+  
+    .memorization-content {
+      padding: 3rem;
+    }
+  
+    .page-title {
+      font-size: 2rem;
+    }
+  
+    .mode-cards {
+      flex-direction: row;
+    }
+  
+    .mode-card {
+      flex: 1;
+    }
+  }
+  
+  /* Hover Effects */
+  .icon-button:hover,
+  .menu-button:hover {
+    opacity: 0.8;
+  }
+  
+  .mode-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }

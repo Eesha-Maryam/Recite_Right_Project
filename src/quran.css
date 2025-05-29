@@ -1,0 +1,9 @@
+.quran-container {
+    padding-top: 60px; /* Matches header height */
+  }
+  
+  .quran-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }

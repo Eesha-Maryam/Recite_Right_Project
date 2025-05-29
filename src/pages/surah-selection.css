@@ -1,0 +1,418 @@
+/* Base Styles */
+:root {
+    --olive-primary: #6B8E23;       /* Your main olive green */
+    --olive-dark: #556B2F;         /* Darker olive (hover states) */
+    --olive-light: #F0F4E8;        /* Very light olive (backgrounds) */
+    --olive-accent: #C1D684;       /* Soft olive highlight */
+    
+    --gray-100: #F8F9FA;           /* Lightest gray (cards) */
+    --gray-200: #E9ECEF;           /* Borders/divider lines */
+    --gray-500: #6C757D;           /* Secondary text */
+    --gray-700: #495057;           /* Primary text */
+    
+    --white: #FFFFFF;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+.surah-selection {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .selection-container {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    gap: 2rem;
+    height: calc(100vh - 70px); /* Adjust based on header height */
+  }
+  
+  /* Left Half Styles */
+  .left-half {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 500px;
+  }
+  
+  .full-quran-block {
+    background-color: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 0.6rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem;
+    margin-top: 5rem;
+    text-align: center;
+  }
+  
+
+  
+  .full-quran-btn {
+    background-color: #9bb36d;
+    align-items: center;
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.8rem 1.2rem;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 8px;
+    margin-top: 1.5rem;
+    
+  }
+  
+  .full-quran-btn:hover {
+    background-color: #7a934d;;
+  }
+  
+  .full-quran-text {
+    margin-top: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .surah-list-block {
+    background-color: var(--white);
+    border-radius: 0.6rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--gray-200);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: calc(100% - 160px); /* Account for full Quran block */
+  }
+  
+  
+  .search-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .search-header input {
+    flex: 1;
+    border: none;
+    padding: 0.5rem;
+    font-size: 0.95rem;
+    margin-left: 0.5rem;
+    outline: none;
+  }
+  
+  .search-icon {
+    color: #999;
+  }
+  
+  .surah-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem;
+ 
+  }
+  
+  .surah-item {
+    margin: 0.8rem;
+    border-radius: 0.4rem;
+    overflow: hidden;
+    border: 1px solid var(--gray-200);
+  }
+  
+  .surah-checkbox {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    background-color: #d7e9b3; /* If supporting modern browsers */
+    cursor: pointer;
+  }
+  
+  .surah-checkbox input {
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+  
+  .surah-name {
+    font-weight: 500;
+    flex: 1;
+    
+  }
+  
+  .range-selection {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 3rem;
+    background-color: #f4ffdf;
+    border-top: 1px solid var(--gray-200);
+  }
+ 
+  .range-selection h4 {
+    margin-bottom: 1rem;
+    color: #6d6c6c;
+    font-size: 0.95rem;
+  }
+  
+  .range-controls {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .range-field {
+    flex: 1;
+  }
+  
+  .range-field label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .range-input {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.4rem;
+    overflow: hidden;
+  }
+  
+  .range-input button {
+    background-color:#d7e9b3;
+    border: none;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .range-input input {
+    flex: 1;
+    border: none;
+    padding: 0.4rem;
+    text-align: center;
+    width: 3rem;
+  }
+  
+  .save-range-btn {
+    background-color: #739738;
+    color: white;
+    transform: translateY(-1px); 
+    border: none;
+    width:auto;
+    border-radius: 0.4rem;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    float: right;
+  }
+  
+  /* Right Half Styles */
+  .right-half {
+    width: 500px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .setup-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-left:10px;
+    margin-bottom: 0.4rem;
+    margin-top: 6rem;
+  }
+  
+  .setup-description {
+    color: #666;
+    font-size: 0.95rem;
+    margin-left:10px;
+    margin-bottom: 2.7rem;
+  }
+  
+  .selected-surahs-block {
+    border: 1px solid var(--gray-200);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Crucial for proper scrolling */
+    background-color: white;
+    border-radius: 0.6rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    height: calc(100vh - 70px); 
+  }
+  
+  .selected-title {
+    font-size: 1rem;
+    margin-left: 1.5em;
+    color: #333;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .empty-state {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-style: italic;
+  }
+  
+  .selected-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .selected-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background-color: #d7e9b3;
+    border-radius: 0.5rem;
+    margin: 1rem 1rem;
+
+  }
+  
+  .surah-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .surah-name {
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
+  
+  .ayah-range {
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .edit-btn, .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.3rem;
+    color: #666;
+
+  }
+  
+  .edit-btn:hover {
+    color: #3498db;
+  }
+  
+  .delete-btn:hover {
+    color: #e74c3c;
+  }
+  
+  .action-buttons-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gray-200);
+  }
+  
+  .clear-btn, .start-quiz-btn {
+    padding: 0.7rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .clear-btn {
+    background-color: #5c5c5c;
+    color: #f1f1f1;
+  }
+  
+  .clear-btn:hover {
+    background-color: #ffffff;
+    border:1px solid #666;
+    color:#666;
+    font-weight: 10px;
+  }
+  
+  .clear-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .start-quiz-btn {
+    background-color: #8ca55a;
+    color: white;
+  }
+  
+  .start-quiz-btn:hover {
+    background-color: #7a934d;
+  }
+  
+  .start-quiz-btn:disabled {
+    background-color: #c0c9b0;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 992px) {
+    .selection-container {
+      flex-direction: column;
+      height: auto;
+    }
+    
+    .left-half, .right-half {
+      width: 100%;
+      height: auto;
+    }
+    
+    .surah-list-block {
+      height: 400px; /* Fixed height on mobile */
+    }
+    
+    .selected-surahs-block {
+      height: 300px; /* Fixed height on mobile */
+    }
+  }
+
+  .surah-list::-webkit-scrollbar,
+.selected-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.surah-list::-webkit-scrollbar-track,
+.selected-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.surah-list::-webkit-scrollbar-thumb,
+.selected-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.surah-list::-webkit-scrollbar-thumb:hover,
+.selected-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

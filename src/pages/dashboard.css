@@ -1,0 +1,147 @@
+.dashboard-container {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.dashboard-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 4rem;
+}
+
+.dashboard-header {
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  margin-top: 3rem;
+}
+
+.dashboard-subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+}
+
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.dashboard-card {
+  background-color: white;
+  border-radius: 1.25rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 15px -3px #739738;
+  padding: 2rem;
+  min-height: 200px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.card-title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.dropdown-container {
+  position: relative;
+}
+
+.month-dropdown {
+  appearance: none;
+  background-color: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  font-size: 1rem;
+  color: #334155;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.month-dropdown:focus {
+  outline: none;
+  border-color: #739738;
+  box-shadow: 0 0 0 2px rgba(151, 180, 105, 0.2);
+}
+
+.chart-container {
+  overflow-x: auto;
+  padding: 1rem 0;
+  height: calc(100% - 40px); /* Adjusted from 60px */
+
+}
+
+.chart-svg {
+  width: 100%;
+  height: 80%;
+  min-height: 200px; /* Reduced from 400px */
+}
+
+/* Chart styles */
+.axis {
+  stroke: #bec7d3;
+  stroke-width: 2;
+}
+
+.bar {
+  fill: #739738;
+  transition: fill 0.3s ease;
+}
+
+.bar:hover {
+  fill: #7d9a4e;
+}
+
+.label {
+  fill: #64748b;
+  font-size: 0.875rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.score-orange {
+  fill: #d97706;
+  font-size: 0.75rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+
+.score-red {
+  fill: #dc2626;
+  font-size: 0.75rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+
+.score-green {
+  fill: #22c55e;
+  font-size: 0.75rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-main {
+    padding: 3rem 6rem;
+  }
+  
+  .dashboard-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+}
